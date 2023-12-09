@@ -98,4 +98,15 @@ class LoginRegistrationController extends Controller
         ]);
     }
 
+    // Get all users' data API (GET)
+    public function fetch_all_userdata() {
+        // Get all users from Users table
+        $users = User::all();
+        return response()->json([
+            'status' => true,
+            'message'=> "All users's data fetched",
+            'data' => $users,
+        ]);
+    }	
+    
 }

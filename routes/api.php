@@ -28,4 +28,5 @@ Route::group([
     Route::get("profile", [LoginRegistrationController::class, "profile"]);
     Route::get("refresh", [LoginRegistrationController::class, "refreshToken"]);
     Route::get("logout", [LoginRegistrationController::class, "logout"]);
+    Route::get("fetch_all_userdata", [LoginRegistrationController::class, "fetch_all_userdata"]);
 });
