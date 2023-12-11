@@ -11,7 +11,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class LoginRegistrationController extends Controller
 {
     //Registation API (POST, formdata)
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         // Validation
         $request->validate([
@@ -22,7 +23,7 @@ class LoginRegistrationController extends Controller
 
         User::create([
             "name" => $request->name,
-            "email" =>$request->email,
+            "email" => $request->email,
             "password" => Hash::make($request->password),
         ]);
 
@@ -33,7 +34,8 @@ class LoginRegistrationController extends Controller
     }
 
     // Login API (POST, formdata)
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         // Validation
         $request->validate([
             "email" => "required|email",
@@ -47,11 +49,14 @@ class LoginRegistrationController extends Controller
         ]);
 
         // Response
-        if (!empty($token)){
+        if (!empty($token)) {
+            // $qry = 'select * from users where email=?'.$request->email;
+            $user = User::where('email', $request->email)->first();
             return response()->json([
                 "status" => true,
                 "message" => "User logged in successfully.",
-                "token" => $token
+                "token" => $token,
+                "userdata" => $user
             ]);
         }
         return response()->json([
@@ -61,7 +66,8 @@ class LoginRegistrationController extends Controller
     }
 
     // Profile API (GET)
-    public function profile() {
+    public function profile()
+    {
 
         $userdata = auth()->user();
 
@@ -70,11 +76,11 @@ class LoginRegistrationController extends Controller
             "message" => "Profile data",
             "user" => $userdata,
         ]);
-
     }
 
     // Refresh token API (GET) 
-    public function refreshToken() {
+    public function refreshToken()
+    {
 
         $newToken = auth()->refresh();
         // $newToken = "123";
@@ -84,11 +90,11 @@ class LoginRegistrationController extends Controller
             "message" => "New token generated.",
             "token" => $newToken,
         ]);
-        
     }
 
     // Logout API (GET)
-    public function logout() {
+    public function logout()
+    {
 
         auth()->logout();
 
@@ -99,14 +105,14 @@ class LoginRegistrationController extends Controller
     }
 
     // Get all users' data API (GET)
-    public function fetch_all_userdata() {
+    public function fetch_all_userdata()
+    {
         // Get all users from Users table
         $users = User::all();
         return response()->json([
             'status' => true,
-            'message'=> "All users's data fetched",
+            'message' => "All users's data fetched",
             'data' => $users,
         ]);
-    }	
-    
+    }
 }
